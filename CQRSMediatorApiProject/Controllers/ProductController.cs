@@ -41,6 +41,14 @@ namespace CQRSMediatorApiProject.Controllers
             return Ok(response);
         }
 
+
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] UpdateProductCommandRequest requestModel)
+        {
+            UpdateProductCommandResponse response = await _mediator.Send(requestModel);
+            return Ok(response);
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromQuery] DeleteProductCommandRequest requestModel)
         {
