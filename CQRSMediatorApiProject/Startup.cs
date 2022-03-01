@@ -33,12 +33,6 @@ namespace CQRSMediatorApiProject
             services.AddMediatR(typeof(Startup));
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            //services.AddMediatR(typeof(AppDbContext));
-
-            //services.AddTransient<CreateProductCommandHandler>();
-            //services.AddTransient<DeleteProductCommandHandler>();
-            //services.AddTransient<GetAllProductQueryHandler>();
-            //services.AddTransient<GetByIdProductQueryHandler>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
