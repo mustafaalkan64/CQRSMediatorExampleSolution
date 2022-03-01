@@ -13,13 +13,21 @@ namespace DAL.CQRS.Handlers.CommandHandlers
 {
     public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommandRequest, DeleteProductCommandResponse>
     {
+        private AppDbContext context;
+        public DeleteProductCommandHandler(AppDbContext context)
+        {
+            this.context = context;
+        }
         public async Task<DeleteProductCommandResponse> Handle(DeleteProductCommandRequest request, CancellationToken cancellationToken)
         {
-            var deleteProduct = AppDbContext.ProductList.FirstOrDefault(p => p.Id == request.Id);
-            AppDbContext.ProductList.Remove(deleteProduct);
+            var product = context.Products.FirstOrDefault(p => p.Id == request.Id);
+            this.context.Products.Remove(product);
+            await context.SaveChangesAsync();
+
             return new DeleteProductCommandResponse
             {
-                IsSuccess = true
+                IsSuccess = true,
+                ProductId = product.Id
             };
         }
     }

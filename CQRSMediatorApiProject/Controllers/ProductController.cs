@@ -49,7 +49,7 @@ namespace CQRSMediatorApiProject.Controllers
             return Ok(response);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] DeleteProductCommandRequest requestModel)
         {
             DeleteProductCommandResponse response = await _mediator.Send(requestModel);

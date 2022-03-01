@@ -13,9 +13,14 @@ namespace DAL.CQRS.Handlers.QueryHandlers
 {
     public class GetAllProductQueryHandler : IRequestHandler<GetAllProductQueryRequest, List<GetAllProductQueryResponse>>
     {
+        private AppDbContext context;
+        public GetAllProductQueryHandler(AppDbContext context)
+        {
+            this.context = context;
+        }
         public async Task<List<GetAllProductQueryResponse>> Handle(GetAllProductQueryRequest request, CancellationToken cancellationToken)
         {
-            return AppDbContext.ProductList.Select(product => new GetAllProductQueryResponse
+            return this.context.Products.Select(product => new GetAllProductQueryResponse
             {
                 Id = product.Id,
                 Name = product.Name,

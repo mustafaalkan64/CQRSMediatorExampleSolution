@@ -1,4 +1,5 @@
 ﻿using CQRSMediatorApiProject;
+using CQRSMediatorApiProject.Models;
 using DAL.CQRS.Commands.Request;
 using DAL.CQRS.Commands.Response;
 using MediatR;
@@ -13,22 +14,27 @@ namespace DAL.CQRS.Handlers.CommandHandlers
 {
     public class CreateProductCommandHandler : IRequestHandler<CreateProductCommandRequest, CreateProductCommandResponse>
     {
+        private AppDbContext context;
+        public CreateProductCommandHandler(AppDbContext context)
+        {
+            this.context = context;
+        }
         public async Task<CreateProductCommandResponse> Handle(CreateProductCommandRequest request, CancellationToken cancellationToken)
         {
-            Random rnd = new Random();
-            int randomId = rnd.Next(100, 1000);  
-            AppDbContext.ProductList.Add(new()
+            var product = new Products()
             {
-                Id = randomId,
                 Name = request.Name,
                 Price = request.Price,
                 Quantity = request.Quantity,
                 CreateTime = DateTime.Now
-            });
+            };
+            context.Products.Add(product);
+
+            await this.context.SaveChangesAsync();
             return new CreateProductCommandResponse
             {
                 IsSuccess = true,
-                ProductId = randomId
+                ProductId = product.Id
             };
         }
     }
